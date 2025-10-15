@@ -99,6 +99,8 @@ class syntax_plugin_diagrams_mediafile extends DokuWiki_Syntax_Plugin
             return false;
         }
 
+        if (auth_quickaclcheck(cleanID($data['src'])) < AUTH_READ) return false;
+
         // check for cached PNG
         $cachefile = $this->getCachedPNG($data);
 
