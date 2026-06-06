@@ -5,3 +5,4 @@
 $meta['service_url']  = array('string');
 $meta['mode'] = array('multichoice', '_choices' => array(1, 2, 3));
 $meta['pngcache'] = array('onoff');
+$meta['detectbytes'] = array('numeric', '_min' => 1);

@@ -16,7 +16,7 @@ class helper_plugin_diagrams extends \dokuwiki\Extension\Plugin
      */
     public function isDiagramFile($file)
     {
-        $svg = file_get_contents($file, false, null, 0, 500);
+        $svg = file_get_contents($file, false, null, 0, (int)$this->getConf('detectbytes'));
         return $this->isDiagram($svg);
     }
 
@@ -25,12 +25,12 @@ class helper_plugin_diagrams extends \dokuwiki\Extension\Plugin
      *
      * This is done by ensuring that the service host is part of the SVG header
      *
-     * @param string $svg The raw SVG data (first 500 bytes are enough)
+     * @param string $svg The raw SVG data (only the configured leading bytes are checked)
      * @return bool
      */
     public function isDiagram($svg)
     {
-        $svg = substr($svg, 0, 500); // makes checking a tiny bit faster
+        $svg = substr($svg, 0, (int)$this->getConf('detectbytes')); // makes checking a tiny bit faster
         $svg = preg_replace('/<\?xml.*?>/', '', $svg);
         $svg = preg_replace('/<!--.*?-->/', '', $svg);
         $svg = preg_replace('/<!DOCTYPE.*?>/', '', $svg);
