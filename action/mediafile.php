@@ -39,7 +39,7 @@ class action_plugin_diagrams_mediafile extends DokuWiki_Action_Plugin
         $event->stopPropagation();
 
         global $INPUT;
-        $mediaId = $INPUT->str('mediaId');
+        $mediaId = cleanID($INPUT->str('mediaId'));
 
         $file = mediaFN($mediaId);
 
