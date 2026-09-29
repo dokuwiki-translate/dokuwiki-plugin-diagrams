@@ -152,7 +152,7 @@ class DiagramsMediaManager {
         const intro = document.createElement('p');
         intro.innerText = LANG.plugins.diagrams.createIntro;
         const namespace = document.createElement('strong');
-        namespace.innerText = ':'+ns;
+        namespace.innerText = ' :'+ns;
         intro.appendChild(namespace);
         form.appendChild(intro);
 
@@ -183,12 +183,19 @@ class DiagramsMediaManager {
 
         const id = input.value;
 
-        // check for validity
-        if (id.length < 0 || !/^[\w][\w\.\-]*$/.test(id)) {
+        // check for validity, sub namespaces relative to the current one are allowed (like in media upload)
+        if (!id.split(':').every(part => /^[\w][\w\.\-]*$/.test(part))) {
             alert(LANG.plugins.diagrams.errorInvalidId);
             return;
         }
         const svg = namespace + ':' + id + '.svg';
+        const targetNs = svg.substring(0, svg.lastIndexOf(':')).replace(/^:/, '');
+
+        // the upload will create a new namespace, but the user needs permissions there
+        if (targetNs !== namespace && !await this.#checkACLs(targetNs)) {
+            alert(LANG.plugins.diagrams.createForbidden);
+            return;
+        }
 
         if (await this.#checkOverwrite(svg)) {
             alert('File exists already! Choose a different name!');
@@ -197,7 +204,7 @@ class DiagramsMediaManager {
 
         const editor = new DiagramsEditor(() => {
             let url = new URL(window.location.href);
-            url.searchParams.set('ns', namespace);
+            url.searchParams.set('ns', targetNs);
             // these will be ignored in the popup:
             url.searchParams.set('image', svg);
             url.searchParams.set('tab_details', 'view');

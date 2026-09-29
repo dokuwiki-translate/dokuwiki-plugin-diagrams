@@ -6,7 +6,7 @@ $lang['embedSaveSummary'] = 'Embedded diagram updated';
 
 $lang['js']['createButton'] = 'Create';
 $lang['js']['createLink'] = 'Create a diagram';
-$lang['js']['createIntro'] = 'Create a diagram in current namespace';
+$lang['js']['createIntro'] = 'Enter a name for the diagram. A prefix with a colon like "new:name" creates it in a new subnamespace. Current namespace is ';
 $lang['js']['createForbidden'] = 'You do not have sufficient permissions';
 $lang['js']['editButton'] = 'Edit diagram';
 $lang['js']['downloadSVGButton'] = 'Download diagram as SVG';
